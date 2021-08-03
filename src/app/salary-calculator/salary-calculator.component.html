@@ -1,0 +1,43 @@
+<button class="calc-btn" (click)="showSalaryCalc()">
+  <i class="fas fa-calculator"></i>
+</button>
+
+
+
+<popup-modal *ngIf="showCalcPopup" (closeModal)="showCalcPopup = false">
+
+  <!--popup header-->
+  <ng-container popupHeaderTitle>
+    Monthly Salary Calculator
+  </ng-container>
+
+  <!--popup main content -->
+  <ng-container popupMainContent>
+    <div class="copyfrom">
+      <p>copy from permanent job in voe?
+        <span>
+          <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+            <button type="button" class="btn" [class]="copyJob? 'btn-danger': 'btn-normal'"
+              (click)="copyJob = true">Yes</button>
+            <button type="button" class="btn" [ngClass]="copyJob? 'btn-normal': 'btn-danger'"
+              (click)="copyJob = false">No</button>
+          </div>
+        </span>
+      </p>
+    </div>
+
+    <div class="row">
+      <salary-calculator-form></salary-calculator-form>
+    </div>
+
+  </ng-container>
+
+  <!--popup footer content-->
+  <ng-container popupFooterContent>
+    <div class="btn-section">
+      <button type="button" class="btn btn-outline-danger">Cancel</button>
+      <button type="button" class="btn btn-danger">Save</button>
+    </div>
+  </ng-container>
+
+</popup-modal>

@@ -1,0 +1,18 @@
+<section (click)="closePopupModal()" class="popup-overlay">
+  <article (click)="$event.stopPropagation()" class="popup-container">
+    <header class="popup-modal-header">
+      <h2>
+        <ng-content select="[popupHeaderTitle]"></ng-content>
+      </h2>
+      <div class="close" (click)="closePopupModal()">
+        <i class="fas fa-window-close" id="close-icon"></i>
+      </div>
+    </header>
+    <div class="popup-modal-content">
+      <ng-content select="[popupMainContent]"></ng-content>
+    </div>
+    <footer class="popup-modal-footer">
+      <ng-content select="[popupFooterContent]"></ng-content>
+    </footer>
+  </article>
+</section>

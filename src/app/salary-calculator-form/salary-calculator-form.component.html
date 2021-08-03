@@ -1,0 +1,45 @@
+<section class="salary-calc-form">
+  <form>
+    <header>
+      <div class="col-3">Borrower</div>
+      <div class="col-3 text-end">Monthly Income</div>
+    </header>
+    <div class="borrow-list" *ngFor="let borrower of borrowerList">
+      <div class="row d-flex align-items-center">
+        <div class="col-3 borrow-name">{{borrower?.name}}</div>
+        <div class="col-3">
+          <div class=" borrow-field frequency-field">
+            <label> frequency field</label>
+            <select #borrowFrequency (change)="setBorrowerFrequency(borrowFrequency.value, borrower)">
+              <option value=""></option>
+              <option value="yearly">Yearly</option>
+              <option value="monthly">Monthly</option>
+              <option value="hourly">Hourly</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="borrow-field income-field">
+            <label> income field</label>
+            <div class="doller">
+              <input type="number" placeholder="0.00" (keyup)="calculateIncome($event,borrower)" />
+            </div>
+          </div>
+        </div>
+        <div class="col-3 monthly-income-section text-end">
+          <h1>${{borrower.total |number}}</h1>
+        </div>
+      </div>
+
+      <div class="extra-field" *ngIf="borrower?.hasHourly">
+        <div class="col-3 hours-field">
+          <div class="borrow-field income-field">
+            <label> Hours per week</label>
+            <input type="number" placeholder="Enter Hours" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</section>
