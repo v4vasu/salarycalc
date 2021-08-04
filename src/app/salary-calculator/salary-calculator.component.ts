@@ -21,4 +21,8 @@ export class SalaryCalculatorComponent implements OnInit {
     this.showCalcPopup = true;
   }
 
+  // doSubmit(){
+
+  // }
+
 }

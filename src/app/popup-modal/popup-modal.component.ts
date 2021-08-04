@@ -8,6 +8,7 @@ import { Component, OnInit, ElementRef, EventEmitter, Output, OnDestroy } from '
 export class PopupModalComponent implements OnInit, OnDestroy {
 
   @Output() closeModal = new EventEmitter();
+  //@Output() doAction = new EventEmitter();
 
   constructor(private elem: ElementRef) { }
 
@@ -18,6 +19,10 @@ export class PopupModalComponent implements OnInit, OnDestroy {
   closePopupModal(){
     this.closeModal.emit();
   }
+
+  // doaction(){
+  //   this.doAction.emit();
+  // }
 
   ngOnDestroy(){
     this.elem.nativeElement.remove();

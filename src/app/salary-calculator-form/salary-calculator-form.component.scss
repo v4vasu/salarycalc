@@ -11,6 +11,11 @@
   }
   .borrow-list{
     padding: 0 20px;
+    input.fieldreadonly{
+      border: none;
+      background-color: transparent;
+      outline: none;
+    }
     .borrow-field{
       label{
         text-transform: uppercase;
@@ -43,6 +48,13 @@
       }
     }
 
+    .total-income-section{
+      input{
+        padding-right: 10px;
+        width: 100%;
+      }
+    }
+
     .extra-field{
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -53,4 +65,6 @@
       }
     }
   }
+
+
 }

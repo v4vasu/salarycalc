@@ -1,45 +1,53 @@
 <section class="salary-calc-form">
-  <form>
+  <form [formGroup]="salaryCalcForm">
     <header>
       <div class="col-3">Borrower</div>
       <div class="col-3 text-end">Monthly Income</div>
     </header>
-    <div class="borrow-list" *ngFor="let borrower of borrowerList">
-      <div class="row d-flex align-items-center">
-        <div class="col-3 borrow-name">{{borrower?.name}}</div>
-        <div class="col-3">
-          <div class=" borrow-field frequency-field">
-            <label> frequency field</label>
-            <select #borrowFrequency (change)="setBorrowerFrequency(borrowFrequency.value, borrower)">
-              <option value=""></option>
-              <option value="yearly">Yearly</option>
-              <option value="monthly">Monthly</option>
-              <option value="hourly">Hourly</option>
-            </select>
-          </div>
-        </div>
-        <div class="col-3">
-          <div class="borrow-field income-field">
-            <label> income field</label>
-            <div class="doller">
-              <input type="number" placeholder="0.00" (keyup)="calculateIncome($event,borrower)" />
+    <ng-container formArrayName="borrowers">
+      <ng-container *ngFor="let borrower of borrowers.controls; let i = index;">
+        <div class="borrow-list" [formGroupName]="i">
+          <div class="row d-flex align-items-center">
+            <div class="col-3 borrow-name">
+              <input class="fieldreadonly" type="text" formControlName="name" readonly />
+            </div>
+            <div class="col-3">
+              <div class=" borrow-field frequency-field">
+                <label> frequency field</label>
+                <select #borrowFrequency formControlName="frequencyType" (change)="setBorrowerFrequency(i)">
+                  <option *ngFor="let fopt of frequencyOptionList" [value]="fopt.key">{{fopt.value}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="borrow-field income-field">
+                <label> income field</label>
+                <div class="doller">
+                  <input type="number" placeholder="0.00" formControlName="income" (keyup)="calculateIncome(i)" />
+                </div>
+              </div>
+            </div>
+            <div class="col-3 total-income-section text-end">
+              <!-- <input class="fieldreadonly" type="number" readonly formControlName="total" /> -->
+              <h1 class="dollar">{{getCurrentValue(i, 'total') | currency}}</h1>
             </div>
           </div>
-        </div>
-        <div class="col-3 monthly-income-section text-end">
-          <h1>${{borrower.total |number}}</h1>
-        </div>
-      </div>
 
-      <div class="extra-field" *ngIf="borrower?.hasHourly">
-        <div class="col-3 hours-field">
-          <div class="borrow-field income-field">
-            <label> Hours per week</label>
-            <input type="number" placeholder="Enter Hours" />
+          <div class="extra-field" *ngIf="hasHourlySelected(i)">
+            <div class="col-3 hours-field">
+              <div class="borrow-field income-field">
+                <label> Hours per week</label>
+                <input type="number" placeholder="Enter Hours" formControlName="numberOfhours"
+                  (keyup)="calculateHourlyIncome(i)" />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-    </div>
+        </div>
+      </ng-container>
+    </ng-container>
+
+
   </form>
 </section>
