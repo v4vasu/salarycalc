@@ -1,4 +1,5 @@
 import { Component, OnInit, ElementRef, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { PopupService } from './popup.service';
 
 @Component({
   selector: 'popup-modal',
@@ -7,25 +8,22 @@ import { Component, OnInit, ElementRef, EventEmitter, Output, OnDestroy } from '
 })
 export class PopupModalComponent implements OnInit, OnDestroy {
 
-  @Output() closeModal = new EventEmitter();
-  //@Output() doAction = new EventEmitter();
-
-  constructor(private elem: ElementRef) { }
+  constructor(private _elem: ElementRef, private _popupService: PopupService) { }
 
   ngOnInit(): void {
-    document.body.appendChild(this.elem.nativeElement);
+    document.body.appendChild(this._elem.nativeElement);
   }
 
   closePopupModal(){
-    this.closeModal.emit();
+    this._popupService.setPopupStatus(false);
   }
 
-  // doaction(){
-  //   this.doAction.emit();
-  // }
+  submitPopup(){
+    this._popupService.setPopupSubmitStatus(true);
+  }
 
   ngOnDestroy(){
-    this.elem.nativeElement.remove();
+    this._elem.nativeElement.remove();
   }
 
 }

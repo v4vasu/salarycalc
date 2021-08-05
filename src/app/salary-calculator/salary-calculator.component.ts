@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PopupService } from '../popup-modal/popup.service';
 
 @Component({
   selector: 'salary-calculator',
@@ -11,14 +12,17 @@ export class SalaryCalculatorComponent implements OnInit {
   copyJob: boolean = false;
 
 
-  constructor() { }
+  constructor(private _popupService: PopupService) { }
 
   ngOnInit(): void {
+    this._popupService.getPopupStatus().subscribe((data)=> {
+      this.showCalcPopup = data;
+    });
   }
 
   showSalaryCalc(){
     console.log('show popup');
-    this.showCalcPopup = true;
+    this._popupService.setPopupStatus(true);
   }
 
   // doSubmit(){

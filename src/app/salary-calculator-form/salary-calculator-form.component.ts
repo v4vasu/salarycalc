@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { PopupService } from '../popup-modal/popup.service';
 
 export interface IBorrower{
   name: string;
@@ -33,8 +34,9 @@ export class SalaryCalculatorFormComponent implements OnInit {
 
   salaryCalcForm: any;
   borrowers: any;
+  isSubmitted: boolean = false;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private _popupService: PopupService) { }
 
   ngOnInit(): void {
     this.salaryCalcForm = this.fb.group({
@@ -47,7 +49,7 @@ export class SalaryCalculatorFormComponent implements OnInit {
         name: [blist.name],
         frequencyType: [blist.frequencyType],
         hasHourly: [blist.hasHourly],
-        numberOfhours: [blist.numberOfhours],
+        numberOfhours: [''],
         income: [blist.income, [Validators.required]],
         total: [blist.total]
       }));
@@ -55,6 +57,17 @@ export class SalaryCalculatorFormComponent implements OnInit {
 
     this.borrowers = this.salaryCalcForm.get("borrowers") as FormArray;
 
+    this._popupService.getPopupSubmitStatus().subscribe((data)=>{
+      this.isSubmitted = data;
+      if(this.isSubmitted){
+        this.sumbitFormData();
+      }
+    });
+
+  }
+
+  sumbitFormData(){
+    console.log(this.salaryCalcForm.value);
   }
 
 
@@ -78,10 +91,8 @@ export class SalaryCalculatorFormComponent implements OnInit {
     if(frequencyType === 'yearly'){
       fCtrls.total.patchValue(Number(income) / 12);
     } else if(frequencyType === 'hourly'){
-      if(income === 0){
-        fCtrls.total.patchValue(`$0`);
-      }else{
-        fCtrls.total.patchValue(`$ ${(Number(income) * Number(numberOfhours) * 52 / 12)}`);
+      if(income){
+        fCtrls.total.patchValue(`${(Number(income) * Number(numberOfhours) * 52 / 12)}`);
       }
     } else if(frequencyType === 'monthly'){
       fCtrls.total.patchValue(Number(income));
@@ -112,7 +123,7 @@ export class SalaryCalculatorFormComponent implements OnInit {
     let income = fCtrls.income.value;
     let numberOfhours = fCtrls.numberOfhours.value;
 
-    if(frequencyType === 'hourly'){
+    if(frequencyType === 'hourly' && income && numberOfhours){
       fCtrls.total.patchValue(Number(income) * Number(numberOfhours) * 52 / 12);
     }
   }
